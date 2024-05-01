@@ -1,1 +1,1 @@
-# medllama
+# MedLlama
