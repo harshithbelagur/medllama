@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama3-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llama3-deployment
+  template:
+    metadata:
+      labels:
+        app: llama3-deployment
+    spec:
+      containers:
+      - name: llama3-deployment
+        image: harshith12/llama1
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: model-storage
+          mountPath: /mnt
+      volumes: 
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: my-model-pvc
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-l4

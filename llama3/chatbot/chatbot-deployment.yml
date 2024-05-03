@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatbot-deployment
+  template:
+    metadata:
+      labels:
+        app: chatbot-deployment
+    spec:
+      containers:
+      - name: chatbot-deployment
+        image: harshith12/chatbot11
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: model-storage
+          mountPath: /mnt
+      volumes: 
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: my-model-pvc

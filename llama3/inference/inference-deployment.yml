@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inference-deployment
+  template:
+    metadata:
+      labels:
+        app: inference-deployment
+    spec:
+      containers:
+      - name: inference-deployment
+        image: harshith12/inference48
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: model-storage
+          mountPath: /mnt
+      volumes: 
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: my-model-pvc
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-l4
